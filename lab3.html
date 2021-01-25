@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lab 3</title>
+</head>
+<body>
+
+<script>
+   fetch("https://api.nasa.gov/planetary/apod?api_key=t4ExBkkhhZSJex8vH7kGorl6Ge72L0Nj9fic8EJ7")
+        .then(response => response.json())
+        .then(data => {
+           head1 = document.createElement('h1');
+           head1.innerText = data.title;
+           imgnasa = document.createElement('img');
+           imgnasa.src = data.hdurl;
+           paragraph = document.createElement('p');
+           paragraph.innerText = data.explanation;
+           document.body.appendChild(head1);
+           document.body.appendChild(imgnasa);
+           document.body.appendChild(paragraph);
+
+       })
+
+
+
+</script>
+
+
+</body>
+
+
+</html>
