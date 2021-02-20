@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Indexed DB basics</title>
+    <script src="https://unpkg.com/dexie@latest/dist/dexie.js"></script>
+    <script>
+        let db = new Dexie("database")
+        db.version(1).stores({
+            schools: 'long_name, student_attainment_rating, student_attendance_year_1'
+        });
+        db.schools.clear();
+        fetch("https://data.cityofchicago.org/resource/dw27-rash.json")
+            .then(response => response.json())
+            .then(data => {
+                data.forEach(row => {
+                    db.schools.put({
+                        long_name: row.long_name,
+                        student_attainment_rating: row.student_attainment_rating,
+                        student_attendance_year_1: parseFloat(row.student_attendance_year_1),
+                        address: row.address,
+                        website: row.website,
+                        school_type: row.school_type
+                    })
+                })
+            })
+
+            .then(() => {
+                let ul = document.createElement("ul")
+                let totSchool = document.createElement("li")
+                db.schools.toArray().then(arr => totSchool.innerHTML = `Total Schools: ${arr.length}`)
+                ul.appendChild(totSchool)
+
+                let avgattainment = document.createElement("li")
+                db.schools.where("student_attainment_rating").equals("AVERAGE").count().then(count => avgattainment.innerHTML = `Schools with a student attainment rating of average: ${count}`)
+                ul.appendChild(avgattainment)
+
+                let yr1attend = document.createElement("li")
+                db.schools.where("student_attendance_year_1").aboveOrEqual(98.0).toArray().then(dat => yr1attend.innerHTML = `>= 98% attendance: ${dat.map(row => row.long_name)}`)
+                ul.appendChild(yr1attend)
+
+                let knames = document.createElement("li")
+                db.schools.where("long_name").startsWith("K").toArray().then(names => knames.innerHTML = `Schools that begin with K: ${names.map(row => row.long_name)}`)
+                ul.appendChild(knames)
+
+              db.transaction('rw', db.schools, async()=>{
+                  db.schools.each(dat => {
+                      if(dat.school_type === "Charter"){
+                          db.schools.delete(dat.long_name)
+                      }
+                  })
+              }).then(_ => {
+                  let noncharters = document.createElement("li")
+                  db.schools.toArray().then(rows => noncharters.innerHTML = `Non-Charter Schools: ${rows.length}`)
+                  ul.appendChild(noncharters)
+              })
+                document.body.appendChild(ul)
+            })
+
+    </script>
+</head>
+<body>
+
+</body>
+
+
+</html>
+
+

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Google Chart Basics</title>
+
+</head>
+<body>
+<div id="pie" style="width: 900px; height: 500px;"></div>
+<hr>
+<div id="line" style="width: 900px; height: 500px;"></div>
+
+</body>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script>
+    let schooltypedata = [];
+    fetch('https://data.cityofchicago.org/resource/dw27-rash.json?$SELECT=school_type,count(school_type)&$GROUP=school_type')
+        .then(resp => resp.json())
+        .then(data => {
+            schooltypedata.push(['School Type', 'Count'])
+            data.forEach(row =>{
+                schooltypedata.push([row["school_type"], parseInt(row["count_school_type"])])
+            })
+        })
+
+    let dosagedata = [];
+    fetch("https://data.cityofchicago.org/resource/553k-3xzc.json?$SELECT=date,sum(total_doses_cumulative)&$GROUP=date&$ORDER=date")
+        .then(resp => resp.json())
+        .then(data => {
+            dosagedata.push(['Date', 'Dosage'])
+            data.forEach(row => {
+                dosagedata.push([row["date"],parseInt(row["sum_total_doses_cumulative"])])
+            })
+        })
+
+    google.charts.load('current', {'packages': ['corechart']});
+    google.charts.setOnLoadCallback(Charts);
+    function Charts(){
+        Pie();
+        Line();
+    }
+
+    function Pie(){
+        let datatable = google.visualization.arrayToDataTable(schooltypedata);
+
+        let prefs = {
+            title: "School Type Counts",
+            hAxis: {
+                title: "School Type"
+            },
+            vAxis:{
+                title: "Count"
+            }
+        }
+
+        let chart = new google.visualization.PieChart(document.querySelector("#pie"));
+        chart.draw(datatable, prefs)
+    }
+
+    function Line(){
+        let datatable = google.visualization.arrayToDataTable(dosagedata);
+
+        let prefs = {
+            title: "Daily dosage visualization",
+            curveType: 'function',
+            hAxis:{
+                title:"Date"
+            },
+            vAxis:{
+                title:"Num Doses"
+            }
+        };
+
+        let chart = new google.visualization.LineChart(document.querySelector("#line"));
+        chart.draw(datatable, prefs);
+    }
+
+
+
+</script>
+</html>
