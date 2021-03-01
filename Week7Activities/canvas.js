@@ -1,8 +1,9 @@
 let circles = [];
 let radius = 50;
 let context;
+let canvas;
 document.addEventListener("DOMContentLoaded", function () {
-    let canvas = document.getElementById("html-canvas");
+    canvas = document.getElementById("html-canvas");
     circles = [];
     radius = 50;
     canvas.width = canvas.clientWidth;
@@ -19,9 +20,9 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 }, false);
 
-function draw(){
+function draw() {
     context.clearRect(0, 0, canvas.width, canvas.height);
-    circles.forEach( (circle) => {
+    circles.forEach((circle) => {
         circle.x = circle.x + Math.cos(circle.direction);
         circle.y = circle.y + Math.sin(circle.direction);
         drawCircle(circle.x, circle.y, radius, 5, circle.color, circle.color);
@@ -39,7 +40,7 @@ function drawCircle(x, y, radius, fill_color) {
     context.stroke();
 }
 
-function randomColour(){
+function randomColour() {
     let chars = '0123456789ABCDEF';
     let colour = '#';
     for (let i = 0; i < 6; i++) {
@@ -47,7 +48,7 @@ function randomColour(){
     }
 }
 
-function bounce(circle){
+function bounce(circle) {
     if (((circle.x - radius) < 0) || ((circle.y - radius) < 0) || ((circle.x + radius) > canvas.width) || ((circle.y + radius) > canvas.height)) {
         circle.direction += (Math.PI / 2);
     }
