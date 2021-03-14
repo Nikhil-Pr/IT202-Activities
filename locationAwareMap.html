@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Geolocation and Google Maps</title>
+    <style>
+        #map{
+            width: 100%;
+            height: 700px;
+        }
+    </style>
+</head>
+<body>
+<div id="map"></div>
+<div id="locDisplay"></div>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCqYV-f67CWaXVMQcix58nXzaLgUvoyH1k&v=weekly"></script>
+<script>
+    let mapDisp
+    if('geolocation' in navigator){
+        navigator.geolocation.getCurrentPosition((position) => {
+             mapDisp = new google.maps.Map(document.getElementById("map"), {
+                zoom: 14,
+                center:{lat: position.coords.latitude, lng: position.coords.longitude}
+             })
+        })
+        navigator.geolocation.watchPosition((watchPos) => {
+            document.querySelector("#locDisplay").insertAdjacentHTML("beforebegin",`{"lat": ${watchPos.coords.latitude}, "lng": ${watchPos.coords.longitude}} ${new Date()} <br/> `)
+
+            new google.maps.Circle({
+                strokeColor:"#FF0000",
+                strokeOpacity:0.8,
+                strokeWeight: 2,
+                fillColor: "#FF0000",
+                fillOpacity: 0.8,
+                map: mapDisp,
+                center: {lat: watchPos.coords.latitude, lng: watchPos.coords.longitude},
+                radius: 20
+            })
+        })
+    }
+</script>
+</body>
+</html>
