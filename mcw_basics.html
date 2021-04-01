@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required styles for Material Web -->
+    <link rel="stylesheet" href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css">
+
+    <meta charset="UTF-8">
+    <title>Material Components For Web Basics</title>
+
+</head>
+<body>
+<label class="mdc-text-field mdc-text-field--filled">
+    <span class="mdc-text-field__ripple"></span>
+    <span class="mdc-floating-label" id="my-label">Enter your name</span>
+    <input type="text" class="mdc-text-field__input" aria-labelledby="my-label">
+    <span class="mdc-line-ripple"></span>
+</label>
+<br/>
+<div class="mdc-touch-target-wrapper">
+    <button class="mdc-button mdc-button--touch mdc-button--raised">
+        <span class="mdc-button__ripple"></span>
+        <span class="mdc-button__label">Show Snackbar</span>
+        <span class="mdc-button__touch"></span>
+    </button>
+</div>
+<div class="mdc-snackbar">
+    <div class="mdc-snackbar__surface" role="status" aria-relevant="additions">
+        <div class="mdc-snackbar__label" aria-atomic="false"></div>
+    </div>
+</div>
+
+<!-- Required Material Web JavaScript library -->
+<script src="https://material-components-web.appspot.com/assets/material-components-web.js"></script>
+<script>
+    //Textfield init
+    mdc.textField.MDCTextField.attachTo(document.querySelector('.mdc-text-field'));
+    //Button init
+    mdc.ripple.MDCRipple.attachTo(document.querySelector('.mdc-button'))
+
+</script>
+
+</body>
+</html>
