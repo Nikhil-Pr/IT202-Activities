@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Nikhil Prasad Homepage</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body class="bg-dark ">
+<div class="text-white" style="text-align: center">
+    <h1>Nikhil Prasad</h1>
+    <h3> nprasad493@gmail.com</h3>
+    <h5>Senior at University of Illinois at Chicago </h5>
+    <h2 class="mt-5">Featured Projects</h2>
+</div>
+<div class="container">
+    <div id="projCards" class=" row mt-4 container justify-content-center" />
+</div>
+<script>
+    let repos = [
+        {
+            "name": "Scrolling Game in js",
+            "desc": "An infinite scroller game written with html/js. Is an installable PWA.",
+            "tech": "HTML, JS, CSS",
+            "repo": "https://github.com/Nikhil-Pr/IT202-Spring2021-project2",
+            "page": "https://nikhil-pr.github.io/IT202-Spring2021-project2/",
+            "img": "assets/rally.jpg"
+        },
+        {
+            "name": "Chicago Land Inventory Viewer",
+            "desc": "A web app that allows users to view chicago land inventory data as well as filter it. Users can also view a map of data",
+            "tech": "HTML, JS, CSS",
+            "repo": "https://github.com/Nikhil-Pr/IT202-Spring2021-project1",
+            "page": "https://nikhil-pr.github.io/IT202-Spring2021-project1/",
+            "img": "assets/landinv.jpg"
+        }
+    ]
+    window.onload = () => {
+        let cardCont = document.querySelector("#projCards")
+        repos.forEach(repo => {
+            let card = `
+                    <div class="card m-3 text-black" style="width: 20rem;">
+                    <img class="card-img-top" src = ${repo.img} alt="cardImg">
+                    <div class="card-body">
+                    <h5 class="card-title">${repo.name}</h5>
+                    <p class = "card-text">${repo.desc}</p>
+                    <p class="card-text">Tech Used: ${repo.tech}</p>
+                    <a href=${repo.repo}>Go to repo </a>
+                    <a href=${repo.page} class="btn btn-secondary">View Page</a>
+                    </div>
+                    </div>
+                `
+            cardCont.innerHTML += card
+        })
+    }
+
+</script>
+</body>
+</html>
